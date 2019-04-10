@@ -5,6 +5,7 @@ class Sphere {
         this.color = color;
         this.center=new Point3D(x,y,z);
         this.vertexes = [];
+        this.faces=[];
 
         let vAng = Math.PI / parallelsNum;
         let hAng = Math.PI * 2 / meridiansNum;
@@ -25,7 +26,21 @@ class Sphere {
 
         let southPole = new Point3D(x, y + this.radius, z);
         this.vertexes.push(southPole);
-        
+
+        for(let i=1; i<meridiansNum; i++){
+            this.faces.push([0,i,i+1]);
+        }
+        this.faces.push([0,meridiansNum,1]);
+
+        for(let i=0; i<this.vertexes.length-1-meridiansNum; i++){
+            this.faces.push([i,i+1,i+meridiansNum]);
+            this.faces.push([i+1,i+meridiansNum,i+1+meridiansNum]);
+        }
+
+        for(let i=this.vertexes.length-1-meridiansNum; i<this.vertexes.length-2; i++){
+            this.faces.push([this.vertexes.length-1,i,i+1]);
+        }
+        this.faces.push([this.vertexes.length-1,this.vertexes.length-2,this.vertexes.length-1-meridiansNum]);
     }
 
     translateX(x) {

@@ -4,22 +4,11 @@ class Face {
         this.fillColor = fillColor;
         this.strokeColor = strokeColor;
 
-        let p0 = points[0];
-        let p1 = new Point3D(
-            (points[1].x - p0.x) / 2 + p0.x,
-            (points[1].y - p0.y) / 2 + p0.y,
-            (points[1].z - p0.z) / 2 + p0.z,
-        );
-        let p3 = new Point3D(
-            (points[3].x - p0.x) / 2 + p0.x,
-            (points[3].y - p0.y) / 2 + p0.y,
-            (points[3].z - p0.z) / 2 + p0.z,
-        );
 
         this.center = new Point3D(
-            p3.x + p1.x - p0.x,
-            p3.y + p1.y - p0.y,
-            p3.z + p1.z - p0.z,
+            (points[0].x+points[1].x+points[2].x)/3,
+            (points[0].y+points[1].y+points[2].y)/3,
+            (points[0].z+points[1].z+points[2].z)/3,
         );
 
     }
@@ -37,9 +26,9 @@ class Face {
     }
 
     project(focalLenght, width, heigth) {
-        var points = new Array(this.points.length);
+        let points = new Array(this.points.length);
 
-        for (var i = 0; i < points.length; i++) {
+        for (let i = 0; i < points.length; i++) {
 
             let p = this.points[i];
 
@@ -59,7 +48,7 @@ class Face {
 
         context.beginPath();
         context.moveTo(points[0].x, points[0].y);
-        for (var k = 1; k <= 3; k++) {
+        for (var k = 1; k < points.length; k++) {
             context.lineTo(points[k].x, points[k].y);
         }
         context.closePath();

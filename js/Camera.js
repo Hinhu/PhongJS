@@ -8,44 +8,38 @@ var focalLength = 1000;
 var areStrokesVisible = false;
 
 var spheres = [
-    new Sphere(0, 0, 0, 10, 200, 200, "#848d9b")
+    new Sphere(0, 0, 0, 10, 50, 50, "#848d9b")
 ];
-console.log(spheres[0].vertexes)
+console.log(spheres[0].faces)
 var facesToRender = [];
 
 
 function calculateFaces() {
-    /*
-    var boxesToRender = [];
-    for (var i = 0; i < spheres.length; i++) {
-        if (!spheres[i].isLeftBehind()) {
-            boxesToRender.push(spheres[i]);
-        }
-    }
+
+
 
     facesToRender = [];
-    for (var i = 0; i < boxesToRender.length; i++) {
-        var box = boxesToRender[i];
-        for (var j = 0; j < 6; j++) {
+    for (var i = 0; i < spheres.length; i++) {
+        var sphere = spheres[i];
+        for (var j = 0; j < sphere.faces.length; j++) {
             var facePoints = [];
-            for (var k = 0; k < 4; k++) {
-                facePoints.push(box.vertexes[box.faces[j][k]]);
+            for (var k = 0; k < 3; k++) {
+                facePoints.push(sphere.vertexes[sphere.faces[j][k]]);
             }
             let face;
-            if(areStrokesVisible){
-                face = new Face(facePoints, box.color,"#FFFFFF");
-            }else{
-                face = new Face(facePoints, box.color,box.color);
+            if (areStrokesVisible) {
+                face = new Face(facePoints, sphere.color, "#FFFFFF");
+            } else {
+                face = new Face(facePoints, sphere.color, sphere.color);
             }
-            if (face.isBack(width / 2, height / 2, focalLength)) {
-                continue;
-            }
+            //if (face.isBack(width / 2, height / 2, focalLength)) {
+            //    continue;
+            //}
             facesToRender.push(face);
         }
     }
 
     paintersAlgorithm(facesToRender);
-    */
 }
 
 function loop() {
@@ -62,17 +56,9 @@ function loop() {
     context.fillRect(0, 0, width, height);
 
     context.fillStyle = "#FFFFFF";
-
-    spheres.forEach((sphere,i)=>{
-        sphere.vertexes.forEach((v,i)=>{
-
-            let x = v.x * (focalLength / v.z) + width * 0.5;
-            let y = v.y * (focalLength / v.z) + height * 0.5;
-
-            context.fillRect(x,y,1,1);
-            
-        })
-    })
+    for (var i = 0; i < facesToRender.length; i++) {
+        facesToRender[i].draw(context, focalLength, width, height);
+    }
 }
 
 document.addEventListener('keydown', event => {
@@ -128,8 +114,8 @@ document.addEventListener('keydown', event => {
         focalLength += 10;
     } else if (event.keyCode == 109) {
         focalLength -= 10;
-    } else if( event.keyCode == 96){
-        areStrokesVisible=!areStrokesVisible;
+    } else if (event.keyCode == 96) {
+        areStrokesVisible = !areStrokesVisible;
     }
     calculateFaces();
 });
