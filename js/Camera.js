@@ -2,14 +2,16 @@ var context = document.querySelector("canvas").getContext("2d");
 
 
 var height = document.documentElement.clientHeight;
-var width = document.documentElement.clientWidth;
+var width = document.documentElement.clientWidth/2;
 var focalLength = 1000;
 
 var areStrokesVisible = false;
 
 var spheres = [
-    new Sphere(0, 0, 0, 10, 50, 50, "#848d9b")
+    new Sphere(0, 0, 0, 10, 10, 10, "#848d9b")
 ];
+
+spheres[0].translateZ(50);
 console.log(spheres[0].faces)
 var facesToRender = [];
 
@@ -32,9 +34,9 @@ function calculateFaces() {
             } else {
                 face = new Face(facePoints, sphere.color, sphere.color);
             }
-            //if (face.isBack(width / 2, height / 2, focalLength)) {
-            //    continue;
-            //}
+            if (face.isBack(width / 2, height / 2, focalLength)) {
+                continue;
+            }
             facesToRender.push(face);
         }
     }
@@ -47,7 +49,7 @@ function loop() {
     window.requestAnimationFrame(loop);
 
     height = document.documentElement.clientHeight;
-    width = document.documentElement.clientWidth;
+    width = document.documentElement.clientWidth/2;
 
     context.canvas.height = height;
     context.canvas.width = width;

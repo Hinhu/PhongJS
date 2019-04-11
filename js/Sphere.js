@@ -28,13 +28,13 @@ class Sphere {
         this.vertexes.push(southPole);
 
         for(let i=1; i<meridiansNum; i++){
-            this.faces.push([0,i,i+1]);
+            this.faces.push([0,i+1,i]);
         }
         this.faces.push([0,meridiansNum,1]);
 
         for(let i=0; i<this.vertexes.length-1-meridiansNum; i++){
             this.faces.push([i,i+1,i+meridiansNum]);
-            this.faces.push([i+1,i+meridiansNum,i+1+meridiansNum]);
+            this.faces.push([i+1,i+1+meridiansNum,i+meridiansNum]);
         }
 
         for(let i=this.vertexes.length-1-meridiansNum; i<this.vertexes.length-2; i++){
