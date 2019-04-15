@@ -6,9 +6,27 @@ class Face {
 
 
         this.center = new Point3D(
-            (points[0].x+points[1].x+points[2].x)/3,
-            (points[0].y+points[1].y+points[2].y)/3,
-            (points[0].z+points[1].z+points[2].z)/3,
+            (points[0].x + points[1].x + points[2].x) / 3,
+            (points[0].y + points[1].y + points[2].y) / 3,
+            (points[0].z + points[1].z + points[2].z) / 3,
+        );
+
+        let v = new Point3D(
+            points[1].x - points[0].x,
+            points[1].y - points[0].y,
+            points[1].z - points[0].z
+        );
+
+        let w = new Point3D(
+            points[2].x - points[0].x,
+            points[2].y - points[0].y,
+            points[2].z - points[0].z
+        );
+
+        this.normal = new Point3D(
+            (v.y * w.z) - (v.z * w.y),
+            (v.z * w.x) - (v.x * w.z),
+            (v.x * w.y) - (v.y * w.x)
         );
 
     }
@@ -40,11 +58,11 @@ class Face {
         return points;
     }
 
-    draw(context, focalLenght, width, heigth) {
+    draw(context, focalLenght, width, heigth,I) {
         var points = this.project(focalLenght, width, heigth);
 
-        context.strokeStyle = this.strokeColor;
-        context.fillStyle = this.fillColor;
+        context.strokeStyle = 'hsl(0,100%,'+I+'%)';
+        context.fillStyle = 'hsl(0,100%,'+I+'%)';
 
         context.beginPath();
         context.moveTo(points[0].x, points[0].y);

@@ -44,51 +44,67 @@
   <canvas></canvas>
 
   <div id="handlers">
-    <h3>Parametry światła</h3>
-    <form>
-      <div class="form-group">
-        <label for="ambient">Natężenie światła otoczenia</label>
-        <input type="number" class="form-control" id="ambient" value="0">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h3>Położenie źródła światła</h3>
+          <form>
+            <div class="form-group">
+              <label for="X">X</label>
+              <input type="range" class="form-control-range" id="X" min="-20" max="20" step="0.5">
+            </div>
+            <hr />
+            <div class="form-group">
+              <label for="Y">Y</label>
+              <input type="range" class="form-control-range" id="Y" min="-20" max="20" step="0.5">
+            </div>
+            <hr />
+            <div class="form-group">
+              <label for="Z">Z</label>
+              <input type="range" class="form-control-range" id="Z" min="-20" max="20" step="0.5">
+            </div>
+          </form>
+          <h3>Parametry światła</h3>
+        </div>
+        <div class="col-md-6">
+          <h3>Parametry materiału</h3>
+          <form>
+            <div class="form-group">
+              <label for="ambient-material">k<sub>a</sub></label>
+              <input type="range" class="form-control-range" id="ambientM" min="0" max="1" step="0.05" value="0.5">
+            </div>
+            <hr />
+            <div class="form-group">
+              <label for="diffuse-material">k<sub>d</sub></label>
+              <input type="range" class="form-control-range" id="diffuseM" min="0" max="1" step="0.05" value="0.5">
+            </div>
+            <hr />
+            <div class="form-group">
+              <label for="specular-material">k<sub>s</sub></label>
+              <input type="range" class="form-control-range" id="specularM" min="0" max="1" step="0.05" value="0.5">
+            </div>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <form>
+            <div class="form-group">
+              <label for="ambient">Natężenie światła otoczenia</label>
+              <input type="number" class="form-control" id="ambient" value="1">
+            </div>
+            <hr />
+            <div class="form-group">
+              <label for="casting">Natężenie światła padającego</label>
+              <input type="number" class="form-control" id="casting" value="1">
+            </div>
+            <hr />
+            <div class="form-group">
+              <label for="n">n</label>
+              <input type="number" class="form-control" id="n" value="1">
+            </div>
+          </form>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="diffuse">Natężenie światła rozproszonego</label>
-        <input type="number" class="form-control" id="diffuse" value="0">
-      </div>
-      <div class="form-group">
-        <label for="specular">Natężenie światła odbijanego zwierciadlanie</label>
-        <input type="number" class="form-control" id="specular" value="0">
-      </div>
-    </form>
-    <h3>Parametry materiału</h3>
-    <form>
-      <div class="form-group">
-        <label for="ambient-material">k<sub>a</sub></label>
-        <input type="number" class="form-control" id="ambient-material" placeholder="[0,1]">
-      </div>
-      <div class="form-group">
-        <label for="diffuse-material">k<sub>d</sub></label>
-        <input type="number" class="form-control" id="diffuse-material" placeholder="[0,1]">
-      </div>
-      <div class="form-group">
-        <label for="specular-material">k<sub>s</sub></label>
-        <input type="number" class="form-control" id="specular-material" placeholder="[0,1]">
-      </div>
-    </form>
-    <h3>Położenie źródła światła</h3>
-    <form>
-      <div class="form-group">
-        <label for="X">X</label>
-        <input type="range" class="form-control-range" id="X">
-      </div>
-      <div class="form-group">
-        <label for="Y">Y</label>
-        <input type="range" class="form-control-range" id="Y">
-      </div>
-      <div class="form-group">
-        <label for="Z">Z</label>
-        <input type="range" class="form-control-range" id="Z">
-      </div>
-    </form>
+    </div>
   </div>
 
   <script src="js/Point2D.js"></script>
@@ -96,6 +112,7 @@
   <script src="js/Face.js"></script>
   <script src="js/Painter.js"></script>
   <script src="js/Sphere.js"></script>
+  <script src="js/Light.js"></script>
   <script src="js/Camera.js"></script>
 </body>
 

@@ -6,6 +6,18 @@ class Point3D {
         this.z = z;
     };
 
+    translateX(x) {
+        this.x += x;
+    }
+
+    translateY(y) {
+        this.y += y;
+    }
+
+    translateZ(z) {
+        this.z += z;
+    }
+
     scale(k) {
         this.x *= k;
         this.y *= k;
