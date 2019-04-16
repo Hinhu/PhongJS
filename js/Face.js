@@ -28,6 +28,7 @@ class Face {
             (v.z * w.x) - (v.x * w.z),
             (v.x * w.y) - (v.y * w.x)
         );
+        this.normal.normalize();
 
     }
 
@@ -61,8 +62,8 @@ class Face {
     draw(context, focalLenght, width, heigth,I) {
         var points = this.project(focalLenght, width, heigth);
 
-        context.strokeStyle = 'hsl(0,100%,'+I+'%)';
-        context.fillStyle = 'hsl(0,100%,'+I+'%)';
+        context.strokeStyle = 'hsl(0,100%,'+I*0.1+'%)';
+        context.fillStyle = 'hsl(0,100%,'+I*0.1+'%)';
 
         context.beginPath();
         context.moveTo(points[0].x, points[0].y);

@@ -8,7 +8,7 @@ var focalLength = 1000;
 var areStrokesVisible = false;
 
 var spheres = [
-    new Sphere(0, 0, 0, 10, 8, 8, "#FFFFFF")
+    new Sphere(0, 0, 0, 10, 100, 100, "#FFFFFF")
 ];
 
 var light = new Light(0, 0, 0, 1, 1, 1);
@@ -68,7 +68,10 @@ function loop() {
         let face = facesToRender[i];
 
         let projector = new Point3D(face.center.x - light.x, face.center.y - light.y, face.center.z - light.z);
-        let viewer = new Point3D(-face.center.x, -face.center.y, -face.center.z + focalLength);
+        projector.normalize();
+
+        let viewer = new Point3D(face.center.x, face.center.y, face.center.z - focalLength);
+        viewer.normalize();
 
         let scalarProjector = projector.x * face.normal.x + projector.y * face.normal.y + projector.z * face.normal.z;
         let scalarViewer = viewer.x * face.normal.x + viewer.y * face.normal.y + viewer.z * face.normal.z;
@@ -78,9 +81,13 @@ function loop() {
         let normalLength = Math.sqrt(Math.pow(face.normal.x, 2) + Math.pow(face.normal.y, 2), Math.pow(face.normal.z, 2));
 
         let cosB = scalarProjector / (projectorLength * normalLength);
-        let cosA = scalarViewer / (viewerLength * normalLength);
 
-        let l = light.Ia * Ka + light.I * (Kd * Math.pow(cosB, light.n) + Ks*Math.pow(cosA, light.n));
+        let cosAB = scalarViewer / (viewerLength * normalLength);
+        let B = Math.acos(cosB);
+        let AB = Math.acos(cosAB);
+        let cosA = Math.cos(AB - B) || 0;
+
+        let l = light.Ia * Ka + light.I * (Kd * Math.pow(cosB, light.n) + Ks * Math.pow(cosA, light.n));
 
         face.draw(context, focalLength, width, height, l);
     }
@@ -195,31 +202,31 @@ sliderKs.oninput = function () {
 
 let ambient = document.getElementById("ambient");
 ambient.oninput = function () {
-    if(ambient.value>=0){
+    if (ambient.value >= 0) {
         light.Ia = ambient.value;
-    }else{
-        ambient.value=0;
-        light.Ia=0;
+    } else {
+        ambient.value = 0;
+        light.Ia = 0;
     }
 }
 
 let casting = document.getElementById("casting");
 casting.oninput = function () {
-    if(casting.value>=0){
+    if (casting.value >= 0) {
         light.I = casting.value;
-    }else{
-        casting.value=0;
-        light.I=0;
+    } else {
+        casting.value = 0;
+        light.I = 0;
     }
 }
 
 let n = document.getElementById("n");
 n.oninput = function () {
-    if(n.value>=1){
+    if (n.value >= 1) {
         light.n = n.value;
-    }else{
-        n.value=1;
-        light.n=1;
+    } else {
+        n.value = 1;
+        light.n = 1;
     }
 }
 
