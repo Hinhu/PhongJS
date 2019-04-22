@@ -1,8 +1,7 @@
 class Face {
-    constructor(points, fillColor, strokeColor) {
+    constructor(points, fillColor) {
         this.points = points;
-        this.fillColor = fillColor;
-        this.strokeColor = strokeColor;
+        this.color = fillColor;
 
 
         this.center = new Point3D(
@@ -11,23 +10,14 @@ class Face {
             (points[0].z + points[1].z + points[2].z) / 3,
         );
 
-        let v = new Point3D(
-            points[1].x - points[0].x,
-            points[1].y - points[0].y,
-            points[1].z - points[0].z
-        );
-
-        let w = new Point3D(
-            points[2].x - points[0].x,
-            points[2].y - points[0].y,
-            points[2].z - points[0].z
-        );
-
-        this.normal = new Point3D(
-            (v.y * w.z) - (v.z * w.y),
-            (v.z * w.x) - (v.x * w.z),
-            (v.x * w.y) - (v.y * w.x)
-        );
+        let edge0 = new Point3D(points[1].x,points[1].y,points[1].z);
+        let edge1 = new Point3D(points[2].x,points[2].y,points[2].z);
+        
+        edge0.sub( points[0] );
+        
+        edge1.sub( points[1] );
+        
+        this.normal = edge1.getCrossProduct( edge0 );
         this.normal.normalize();
 
     }
@@ -59,11 +49,11 @@ class Face {
         return points;
     }
 
-    draw(context, focalLenght, width, heigth,I) {
+    draw(context, focalLenght, width, heigth,color) {
         var points = this.project(focalLenght, width, heigth);
 
-        context.strokeStyle = 'hsl(0,100%,'+I*0.1+'%)';
-        context.fillStyle = 'hsl(0,100%,'+I*0.1+'%)';
+        context.strokeStyle = 'rgb('+color.r+','+color.g+','+color.b+')';
+        context.fillStyle = 'rgb('+color.r+','+color.g+','+color.b+')';
 
         context.beginPath();
         context.moveTo(points[0].x, points[0].y);

@@ -1,11 +1,12 @@
 class Light {
-    constructor(x, y, z, Ia, I, n) {
+    constructor(x, y, z, Ia, I, n, color) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.Ia = Ia;
         this.I = I;
         this.n = n;
+        this.color=color;
     }
 
     projectedPosition(width, heigth, focalLenght) {

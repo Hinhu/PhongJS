@@ -8,10 +8,10 @@ var focalLength = 1000;
 var areStrokesVisible = false;
 
 var spheres = [
-    new Sphere(0, 0, 0, 10, 100, 100, "#FFFFFF")
+    new Sphere(0, 0, 0, 10, 50, 50, new Color(100, 0, 100))
 ];
 
-var light = new Light(0, 0, 0, 1, 1, 1);
+var light = new Light(5, 5, 40, 1, 1, 1, new Color(100, 100, 100));
 
 var Ka = 0.5;
 var Kd = 0.5;
@@ -36,9 +36,9 @@ function calculateFaces() {
             }
             let face;
             if (areStrokesVisible) {
-                face = new Face(facePoints, sphere.color, "#FFFFFF");
+                face = new Face(facePoints, sphere.color);
             } else {
-                face = new Face(facePoints, sphere.color, sphere.color);
+                face = new Face(facePoints, sphere.color);
             }
             if (face.isBack(width / 2, height / 2, focalLength)) {
                 continue;
@@ -60,39 +60,60 @@ function loop() {
     context.canvas.height = height;
     context.canvas.width = width;
 
-    context.fillStyle = "#000000";
+    context.fillStyle = "#333333";
     context.fillRect(0, 0, width, height);
 
     context.fillStyle = "#FFFFFF";
     for (var i = 0; i < facesToRender.length; i++) {
         let face = facesToRender[i];
 
-        let projector = new Point3D(face.center.x - light.x, face.center.y - light.y, face.center.z - light.z);
-        projector.normalize();
+        let followFaceCenter = new Point3D(face.center.x, face.center.y, face.center.z);
+        followFaceCenter.sub(new Point3D(0, 0, -focalLength));
+        followFaceCenter.normalize();
 
-        let viewer = new Point3D(face.center.x, face.center.y, face.center.z - focalLength);
-        viewer.normalize();
 
-        let scalarProjector = projector.x * face.normal.x + projector.y * face.normal.y + projector.z * face.normal.z;
-        let scalarViewer = viewer.x * face.normal.x + viewer.y * face.normal.y + viewer.z * face.normal.z;
+        let dotProd = face.normal.getScalarProduct(followFaceCenter);
 
-        let viewerLength = Math.sqrt(Math.pow(viewer.x, 2) + Math.pow(viewer.y, 2), Math.pow(viewer.z, 2));
-        let projectorLength = Math.sqrt(Math.pow(projector.x, 2) + Math.pow(projector.y, 2), Math.pow(projector.z, 2));
-        let normalLength = Math.sqrt(Math.pow(face.normal.x, 2) + Math.pow(face.normal.y, 2), Math.pow(face.normal.z, 2));
+        let obsNormal = new Point3D(0, 0, 1);
 
-        let cosB = scalarProjector / (projectorLength * normalLength);
+        let tmp = new Point3D(face.center.x, face.center.y, face.center.z);
+        tmp.sub(new Point3D(light.x, light.y, light.y));
+        tmp.normalize();
 
-        let cosAB = scalarViewer / (viewerLength * normalLength);
-        let B = Math.acos(cosB);
-        let AB = Math.acos(cosAB);
-        let cosA = Math.cos(AB - B) || 0;
+        let beta = Math.acos(face.normal.getScalarProduct(tmp));
 
-        let l = light.Ia * Ka + light.I * (Kd * Math.pow(cosB, light.n) + Ks * Math.pow(cosA, light.n));
+        let tmp2 = face.normal.getCrossProduct(tmp);
 
-        face.draw(context, focalLength, width, height, l);
+        let R = new Point3D(tmp.x, tmp.y, tmp.z);
+        R.rotateAV(tmp2, beta * 2);
+
+        let dotProd2 = Math.pow(obsNormal.getScalarProduct(R), light.n);
+
+        let color = new Color(0, 0, 0);
+        if (dotProd < 0) {
+            color.r += light.color.r * Math.abs(dotProd) * Kd + light.color.r * Math.abs(dotProd2) * Ks;
+            color.g += light.color.g * Math.abs(dotProd) * Kd + light.color.g * Math.abs(dotProd2) * Ks;
+            color.b += light.color.b * Math.abs(dotProd) * Kd + light.color.b * Math.abs(dotProd2) * Ks;
+        }
+
+
+        color.r += face.color.r * Ka;
+        color.g += face.color.g * Ka;
+        color.b += face.color.b * Ka;
+
+        if (color.r > 255) {
+            color.r = 255;
+        }
+        if (color.g > 255) {
+            color.g = 255;
+        }
+        if (color.b > 255) {
+            color.b = 255;
+        }
+        face.draw(context, focalLength, width, height, color);
     }
     if (light.z >= 0) {
-        context.fillStyle = "#FFFFFF";
+        context.fillStyle = 'rgb(' + light.color.r + ',' + light.color.g + ',' + light.color.b + ')';
         let l = light.projectedPosition(width, height, focalLength);
         context.fillRect(l.x, l.y, 5, 5);
     }
@@ -170,19 +191,19 @@ document.addEventListener('keydown', event => {
     calculateFaces();
 });
 
-let sliderX = document.getElementById("X");
-sliderX.oninput = function () {
-    light.x = sliderX.value;
+let sliderR = document.getElementById("R");
+sliderR.oninput = function () {
+    light.color.r = sliderR.value;
 }
 
-let sliderY = document.getElementById("Y");
-sliderY.oninput = function () {
-    light.y = sliderY.value;
+let sliderG = document.getElementById("G");
+sliderG.oninput = function () {
+    light.color.g = sliderG.value;
 }
 
-let sliderZ = document.getElementById("Z");
-sliderZ.oninput = function () {
-    light.z = sliderZ.value;
+let sliderB = document.getElementById("B");
+sliderB.oninput = function () {
+    light.color.b = sliderB.value;
 }
 
 let sliderKa = document.getElementById("ambientM");
@@ -200,25 +221,6 @@ sliderKs.oninput = function () {
     Ks = sliderKs.value;
 }
 
-let ambient = document.getElementById("ambient");
-ambient.oninput = function () {
-    if (ambient.value >= 0) {
-        light.Ia = ambient.value;
-    } else {
-        ambient.value = 0;
-        light.Ia = 0;
-    }
-}
-
-let casting = document.getElementById("casting");
-casting.oninput = function () {
-    if (casting.value >= 0) {
-        light.I = casting.value;
-    } else {
-        casting.value = 0;
-        light.I = 0;
-    }
-}
 
 let n = document.getElementById("n");
 n.oninput = function () {

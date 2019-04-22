@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
 
-  <title>Basic 3D</title>
+  <title>Phong</title>
   <meta name="description" content="Basic 3D rendering without WebGL">
   <meta name="author" content="Maciej_Zalewski">
 
@@ -47,21 +47,21 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6">
-          <h3>Położenie źródła światła</h3>
+          <h3>Kolor światła</h3>
           <form>
             <div class="form-group">
-              <label for="X">X</label>
-              <input type="range" class="form-control-range" id="X" min="-20" max="20" step="0.5">
+              <label for="R">R</label>
+              <input type="range" class="form-control-range" id="R" min="0" max="255" step="0.5" value="100">
             </div>
             <hr />
             <div class="form-group">
-              <label for="Y">Y</label>
-              <input type="range" class="form-control-range" id="Y" min="-20" max="20" step="0.5">
+              <label for="G">G</label>
+              <input type="range" class="form-control-range" id="G" min="0" max="255" step="0.5" value="100">
             </div>
             <hr />
             <div class="form-group">
-              <label for="Z">Z</label>
-              <input type="range" class="form-control-range" id="Z" min="-20" max="20" step="0.5">
+              <label for="B">B</label>
+              <input type="range" class="form-control-range" id="B" min="0" max="255" step="0.5" value="100">
             </div>
           </form>
           <h3>Parametry światła</h3>
@@ -88,16 +88,6 @@
         <div class="col-md-6">
           <form>
             <div class="form-group">
-              <label for="ambient">Natężenie światła otoczenia</label>
-              <input type="number" class="form-control" id="ambient" value="1">
-            </div>
-            <hr />
-            <div class="form-group">
-              <label for="casting">Natężenie światła padającego</label>
-              <input type="number" class="form-control" id="casting" value="1">
-            </div>
-            <hr />
-            <div class="form-group">
               <label for="n">n</label>
               <input type="number" class="form-control" id="n" value="1">
             </div>
@@ -107,6 +97,7 @@
     </div>
   </div>
 
+  <script src="js/Color.js"></script>
   <script src="js/Point2D.js"></script>
   <script src="js/Point3D.js"></script>
   <script src="js/Face.js"></script>
