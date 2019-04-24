@@ -29,11 +29,20 @@
 
     #handlers {
       height: 100%;
+      padding-top: 20px;
       margin-left: 50vw;
       padding-left: 20px;
       padding-right: 20px;
       background-color: lightblue;
       overflow: auto;
+    }
+
+    .top{
+      border-top: 2px solid #0073e6;
+    }
+
+    .right{
+      border-right: 2px solid #0073e6;
     }
   </style>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -46,27 +55,59 @@
   <div id="handlers">
     <div class="container">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 right">
           <h3>Kolor światła</h3>
           <form>
             <div class="form-group">
-              <label for="R">R</label>
-              <input type="range" class="form-control-range" id="R" min="0" max="255" step="0.5" value="100">
+              <label for="R-light">R</label>
+              <input type="range" class="form-control-range" id="R-light" min="0" max="255" step="0.5" value="100">
             </div>
             <hr />
             <div class="form-group">
-              <label for="G">G</label>
-              <input type="range" class="form-control-range" id="G" min="0" max="255" step="0.5" value="100">
+              <label for="G-light">G</label>
+              <input type="range" class="form-control-range" id="G-light" min="0" max="255" step="0.5" value="100">
             </div>
             <hr />
             <div class="form-group">
-              <label for="B">B</label>
-              <input type="range" class="form-control-range" id="B" min="0" max="255" step="0.5" value="100">
+              <label for="B-light">B</label>
+              <input type="range" class="form-control-range" id="B-light" min="0" max="255" step="0.5" value="100">
             </div>
           </form>
-          <h3>Parametry światła</h3>
         </div>
         <div class="col-md-6">
+          <h3>Kolor kulki</h3>
+          <form>
+            <div class="form-group">
+              <label for="R-sphere">R</label>
+              <input type="range" class="form-control-range" id="R-sphere" min="0" max="255" step="0.5" value="100">
+            </div>
+            <hr />
+            <div class="form-group">
+              <label for="G-sphere">G</label>
+              <input type="range" class="form-control-range" id="G-sphere" min="0" max="255" step="0.5" value="100">
+            </div>
+            <hr />
+            <div class="form-group">
+              <label for="B-sphere">B</label>
+              <input type="range" class="form-control-range" id="B-sphere" min="0" max="255" step="0.5" value="100">
+            </div>
+          </form>
+        </div>
+        <div class="col-md-6 right top">
+          <h3>Położenie źródła światła</h3>
+          <form>
+            <div class="form-group">
+              <label for="X">X</label>
+              <input type="range" class="form-control-range" id="X" min="-50" max="50" step="0.5">
+            </div>
+            <hr />
+            <div class="form-group">
+              <label for="Y">Y</label>
+              <input type="range" class="form-control-range" id="Y" min="-50" max="50" step="0.5">
+            </div>
+          </form>
+        </div>
+        <div class="col-md-6 top">
           <h3>Parametry materiału</h3>
           <form>
             <div class="form-group">
@@ -85,11 +126,27 @@
             </div>
           </form>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 right top">
+          <h3>Parametry światła</h3>
           <form>
             <div class="form-group">
               <label for="n">n</label>
-              <input type="number" class="form-control" id="n" value="1">
+              <input type="number" class="form-control" id="n" value="10">
+            </div>
+          </form>
+        </div>
+        <div class="col-md-6 top">
+          <h3>Parametry kulki</h3>
+          <form>
+            <div class="form-group">
+              <label for="par">Liczba równoleżników</label>
+              <input type="number" class="form-control" id="par" value="50">
+            </div>
+          </form>
+          <form>
+            <div class="form-group">
+              <label for="mer">Liczba południków</label>
+              <input type="number" class="form-control" id="mer" value="50">
             </div>
           </form>
         </div>

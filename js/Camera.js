@@ -8,10 +8,10 @@ var focalLength = 1000;
 var areStrokesVisible = false;
 
 var spheres = [
-    new Sphere(0, 0, 0, 10, 50, 50, new Color(100, 0, 100))
+    new Sphere(0, 0, 0, 10, 50, 50, new Color(100, 100, 100))
 ];
 
-var light = new Light(5, 5, 40, 1, 1, 1, new Color(100, 100, 100));
+var light = new Light(0, 0, -100, 10, new Color(100, 100, 100));
 
 var Ka = 0.5;
 var Kd = 0.5;
@@ -87,13 +87,17 @@ function loop() {
         let R = new Point3D(tmp.x, tmp.y, tmp.z);
         R.rotateAV(tmp2, beta * 2);
 
+        let nope=obsNormal.getScalarProduct(R)>0;
         let dotProd2 = Math.pow(obsNormal.getScalarProduct(R), light.n);
 
         let color = new Color(0, 0, 0);
-        if (dotProd < 0) {
-            color.r += light.color.r * Math.abs(dotProd) * Kd + light.color.r * Math.abs(dotProd2) * Ks;
-            color.g += light.color.g * Math.abs(dotProd) * Kd + light.color.g * Math.abs(dotProd2) * Ks;
-            color.b += light.color.b * Math.abs(dotProd) * Kd + light.color.b * Math.abs(dotProd2) * Ks;
+        color.r += light.color.r * Math.abs(dotProd) * Kd;
+        color.g += light.color.g * Math.abs(dotProd) * Kd;
+        color.b += light.color.b * Math.abs(dotProd) * Kd;
+        if (nope) {
+            color.r += light.color.r * Math.abs(dotProd2) * Ks;
+            color.g += light.color.g * Math.abs(dotProd2) * Ks;
+            color.b += light.color.b * Math.abs(dotProd2) * Ks;
         }
 
 
@@ -120,6 +124,7 @@ function loop() {
 
 }
 
+/*
 document.addEventListener('keydown', event => {
     if (event.keyCode === 32) {
         for (var i = 0; i < spheres.length; i++) {
@@ -190,20 +195,36 @@ document.addEventListener('keydown', event => {
     }
     calculateFaces();
 });
+*/
 
-let sliderR = document.getElementById("R");
-sliderR.oninput = function () {
-    light.color.r = sliderR.value;
+let sliderRlight = document.getElementById("R-light");
+sliderRlight.oninput = function () {
+    light.color.r = sliderRlight.value;
 }
 
-let sliderG = document.getElementById("G");
-sliderG.oninput = function () {
-    light.color.g = sliderG.value;
+let sliderGlight = document.getElementById("G-light");
+sliderGlight.oninput = function () {
+    light.color.g = sliderGlight.value;
 }
 
-let sliderB = document.getElementById("B");
-sliderB.oninput = function () {
-    light.color.b = sliderB.value;
+let sliderBlight = document.getElementById("B-light");
+sliderBlight.oninput = function () {
+    light.color.b = sliderBlight.value;
+}
+
+let sliderRsphere = document.getElementById("R-sphere");
+sliderRsphere.oninput = function () {
+    spheres[0].color.r = sliderRsphere.value;
+}
+
+let sliderGsphere = document.getElementById("G-sphere");
+sliderGsphere.oninput = function () {
+    spheres[0].color.g = sliderGsphere.value;
+}
+
+let sliderBsphere = document.getElementById("B-sphere");
+sliderBsphere.oninput = function () {
+    spheres[0].color.b = sliderBsphere.value;
 }
 
 let sliderKa = document.getElementById("ambientM");
@@ -230,6 +251,54 @@ n.oninput = function () {
         n.value = 1;
         light.n = 1;
     }
+}
+
+let par = document.getElementById("par");
+par.oninput = function () {
+    if (par.value >= 2) {
+        let old=new Point3D(spheres[0].center.x,spheres[0].center.y,spheres[0].center.z);
+        spheres[0]=new Sphere(0,0,0,spheres[0].radius,par.value,spheres[0].meridiansNum,spheres[0].color);
+        spheres[0].translateX(old.x);
+        spheres[0].translateY(old.y);
+        spheres[0].translateZ(old.z);
+        console.log(spheres[0])
+    } else {
+        let old=new Point3D(spheres[0].center.x,spheres[0].center.y,spheres[0].center.z);
+        spheres[0]=new Sphere(0,0,0,spheres[0].radius,par.value,spheres[0].meridiansNum,spheres[0].color);
+        spheres[0].translateX(old.x);
+        spheres[0].translateY(old.y);
+        spheres[0].translateZ(old.z);
+    }
+    calculateFaces();
+}
+
+let mer = document.getElementById("mer");
+mer.oninput = function () {
+    if (mer.value >= 3) {
+        let old=new Point3D(spheres[0].center.x,spheres[0].center.y,spheres[0].center.z);
+        spheres[0]=new Sphere(0,0,0,spheres[0].radius,spheres[0].parallelsNum,parseInt(mer.value),spheres[0].color);
+        console.log(spheres[0])
+        spheres[0].translateX(old.x);
+        spheres[0].translateY(old.y);
+        spheres[0].translateZ(old.z);
+    } else {
+        let old=new Point3D(spheres[0].center.x,spheres[0].center.y,spheres[0].center.z);
+        spheres[0]=new Sphere(0,0,0,spheres[0].radius,spheres[0].parallelsNum,parseInt(mer.value),spheres[0].color);
+        spheres[0].translateX(old.x);
+        spheres[0].translateY(old.y);
+        spheres[0].translateZ(old.z);
+    }
+    calculateFaces();
+}
+
+let sliderX = document.getElementById("X");
+sliderX.oninput = function () {
+    light.x = sliderX.value;
+}
+
+let sliderY = document.getElementById("Y");
+sliderY.oninput = function () {
+    light.y = -sliderY.value;
 }
 
 calculateFaces();

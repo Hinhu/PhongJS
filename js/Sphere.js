@@ -3,6 +3,9 @@ class Sphere {
     constructor(x, y, z, radius, parallelsNum, meridiansNum, color) {
         this.radius = radius;
         this.color = color;
+        this.radius=radius;
+        this.parallelsNum=parallelsNum;
+        this.meridiansNum=meridiansNum;
         this.center=new Point3D(x,y,z);
         this.vertexes = [];
         this.faces=[];
@@ -44,18 +47,21 @@ class Sphere {
     }
 
     translateX(x) {
+        this.center.x+=x;
         for (var i = 0; i < this.vertexes.length; i++) {
             this.vertexes[i].x += x;
         }
     }
 
     translateY(y) {
+        this.center.y+=y;
         for (var i = 0; i < this.vertexes.length; i++) {
             this.vertexes[i].y += y;
         }
     }
 
     translateZ(z) {
+        this.center.z+=z;
         for (var i = 0; i < this.vertexes.length; i++) {
             this.vertexes[i].z += z;
         }
