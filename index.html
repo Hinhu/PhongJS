@@ -37,11 +37,11 @@
       overflow: auto;
     }
 
-    .top{
+    .top {
       border-top: 2px solid #0073e6;
     }
 
-    .right{
+    .right {
       border-right: 2px solid #0073e6;
     }
   </style>
@@ -60,17 +60,17 @@
           <form>
             <div class="form-group">
               <label for="R-light">R</label>
-              <input type="range" class="form-control-range" id="R-light" min="0" max="255" step="0.5" value="100">
+              <input type="range" class="form-control-range" id="R-light" min="0" max="255" step="0.5" value="255">
             </div>
             <hr />
             <div class="form-group">
               <label for="G-light">G</label>
-              <input type="range" class="form-control-range" id="G-light" min="0" max="255" step="0.5" value="100">
+              <input type="range" class="form-control-range" id="G-light" min="0" max="255" step="0.5" value="255">
             </div>
             <hr />
             <div class="form-group">
               <label for="B-light">B</label>
-              <input type="range" class="form-control-range" id="B-light" min="0" max="255" step="0.5" value="100">
+              <input type="range" class="form-control-range" id="B-light" min="0" max="255" step="0.5" value="255">
             </div>
           </form>
         </div>
@@ -79,17 +79,17 @@
           <form>
             <div class="form-group">
               <label for="R-sphere">R</label>
-              <input type="range" class="form-control-range" id="R-sphere" min="0" max="255" step="0.5" value="100">
+              <input type="range" class="form-control-range" id="R-sphere" min="0" max="255" step="0.5" value="200">
             </div>
             <hr />
             <div class="form-group">
               <label for="G-sphere">G</label>
-              <input type="range" class="form-control-range" id="G-sphere" min="0" max="255" step="0.5" value="100">
+              <input type="range" class="form-control-range" id="G-sphere" min="0" max="255" step="0.5" value="200">
             </div>
             <hr />
             <div class="form-group">
               <label for="B-sphere">B</label>
-              <input type="range" class="form-control-range" id="B-sphere" min="0" max="255" step="0.5" value="100">
+              <input type="range" class="form-control-range" id="B-sphere" min="0" max="255" step="0.5" value="200">
             </div>
           </form>
         </div>
@@ -140,14 +140,26 @@
           <form>
             <div class="form-group">
               <label for="par">Liczba równoleżników</label>
-              <input type="number" class="form-control" id="par" value="50">
+              <input type="number" class="form-control" id="par" value="200">
             </div>
           </form>
           <form>
             <div class="form-group">
               <label for="mer">Liczba południków</label>
-              <input type="number" class="form-control" id="mer" value="50">
+              <input type="number" class="form-control" id="mer" value="200">
             </div>
+          </form>
+        </div>
+        <div class="col-md-12 top">
+          <h3>Gotowe materiały</h3>
+          <form>
+            <select class="form-control" id="materials">
+              <option value=""> </option>
+              <option value="rubber">Guma</option>
+              <option value="metal">Metal</option>
+              <option value="pearl">Perła</option>
+              <option value="plastic">Plastik</option>
+            </select>
           </form>
         </div>
       </div>

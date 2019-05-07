@@ -75,7 +75,7 @@ class Point3D {
     }
 
     getAngleY() {
-        let ny = new Point3D(0, 1, 0); // ny - normal Y
+        let ny = new Point3D(0, 1, 0);
         let cosAngle = this.getScalarProduct(ny) / this.getMagnituded();
         return Math.acos(cosAngle);
     }
@@ -90,8 +90,8 @@ class Point3D {
         if (this.x == 0 && this.z == 0 && this.y != 0) {
             return 0;
         } else {
-            let nX = new Point3D(1, 0, 0); // nx - normal X
-            let nZ = new Point3D(0, 0, 1); // nz - normal Z
+            let nX = new Point3D(1, 0, 0); 
+            let nZ = new Point3D(0, 0, 1);
 
 
             let sX = this.getScalarProduct(nX);
@@ -122,9 +122,8 @@ class Point3D {
         let vA = axis.getVerticAngle();
 
         this.rotateY(-hA);
-        // teraz nasz wektor jest w plaszczynie YZ
         this.rotateX(-vA);
-        // teraz nasz wektor jest w kierunku osi Y
+
 
         this.rotateY(a);
 

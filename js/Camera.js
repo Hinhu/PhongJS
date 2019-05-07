@@ -8,10 +8,10 @@ var focalLength = 1000;
 var areStrokesVisible = false;
 
 var spheres = [
-    new Sphere(0, 0, 0, 10, 50, 50, new Color(100, 100, 100))
+    new Sphere(0, 0, 0, 10, 200, 200, new Color(200, 200, 200)),
 ];
 
-var light = new Light(0, 0, -100, 10, new Color(100, 100, 100));
+var light = new Light(0, 0, -100, 10, new Color(255, 255, 255));
 
 var Ka = 0.5;
 var Kd = 0.5;
@@ -71,21 +71,20 @@ function loop() {
         followFaceCenter.sub(new Point3D(0, 0, -focalLength));
         followFaceCenter.normalize();
 
-
         let dotProd = face.normal.getScalarProduct(followFaceCenter);
 
         let obsNormal = new Point3D(0, 0, 1);
 
-        let tmp = new Point3D(face.center.x, face.center.y, face.center.z);
-        tmp.sub(new Point3D(light.x, light.y, light.y));
-        tmp.normalize();
+        let L = new Point3D(face.center.x, face.center.y, face.center.z);
+        L.sub(new Point3D(light.x, light.y, light.y));
+        L.normalize();
 
-        let beta = Math.acos(face.normal.getScalarProduct(tmp));
+        let beta = Math.acos(face.normal.getScalarProduct(L));
 
-        let tmp2 = face.normal.getCrossProduct(tmp);
+        let V = face.normal.getCrossProduct(L);
 
-        let R = new Point3D(tmp.x, tmp.y, tmp.z);
-        R.rotateAV(tmp2, beta * 2);
+        let R = new Point3D(L.x, L.y, L.z);
+        R.rotateAV(V, beta * 2);
 
         let nope=obsNormal.getScalarProduct(R)>0;
         let dotProd2 = Math.pow(obsNormal.getScalarProduct(R), light.n);
@@ -98,7 +97,11 @@ function loop() {
             color.r += light.color.r * Math.abs(dotProd2) * Ks;
             color.g += light.color.g * Math.abs(dotProd2) * Ks;
             color.b += light.color.b * Math.abs(dotProd2) * Ks;
-        }
+        }/*else{
+            color.r += -light.color.r * Math.abs(dotProd2) * Ks;
+            color.g += -light.color.g * Math.abs(dotProd2) * Ks;
+            color.b += -light.color.b * Math.abs(dotProd2) * Ks;
+        }*/
 
 
         color.r += face.color.r * Ka;
@@ -299,6 +302,48 @@ sliderX.oninput = function () {
 let sliderY = document.getElementById("Y");
 sliderY.oninput = function () {
     light.y = -sliderY.value;
+}
+
+let selectMaterial = document.getElementById("materials");
+selectMaterial.onchange = function () {
+    let select = selectMaterial.value;
+    if(select=="rubber"){
+        Ka=0.01;
+        sliderKa.value=0.02;
+        Kd=0.01;
+        sliderKd.value=0.01;
+        Ks=0.4;
+        sliderKs.value=0.4;
+        n.value = 10;
+        light.n = 10;
+    }else if(select=="plastic"){
+        Ka=0;
+        sliderKa.value=0;
+        Kd=0.55;
+        sliderKd.value=0.55;
+        Ks=0.7;
+        sliderKs.value=0.7;
+        n.value = 32;
+        light.n = 32;
+    }else if(select=="metal"){
+        Ka=0.23125;
+        sliderKa.value=0.23125;
+        Kd=0.2775;
+        sliderKd.value=0.2775;
+        Ks=0.773911;
+        sliderKs.value=0.773911;
+        n.value = 89;
+        light.n = 89;
+    }else if(select=="pearl"){
+        Ka=0.25;
+        sliderKa.value=0.25;
+        Kd=0.829;
+        sliderKd.value=0.829;
+        Ks=0.296648;
+        sliderKs.value=0.296648;
+        n.value = 11;
+        light.n = 11;
+    }
 }
 
 calculateFaces();
